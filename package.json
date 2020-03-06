@@ -1,0 +1,14 @@
+{
+  "name": "git-push-as",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/d0liver/git-push-as",
+  "author": "David Oliver <t3tris.d3vil@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "git-push-as": "index.js"
+  },
+  "scripts": {
+    "preinstall": "spago build"
+  }
+}

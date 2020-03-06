@@ -5,12 +5,8 @@ import Prelude
 import Data.Array as A
 import Data.Foldable (class Foldable)
 import Data.List (List)
-import Data.String.Common (joinWith)
 import Effect (Effect)
-import Effect.Console (log)
-import Node.Buffer.Class (toString) as Buff
-import Node.ChildProcess (defaultExecSyncOptions, execSync)
-import Node.Encoding (Encoding(..))
+import Node.ChildProcess (defaultSpawnOptions, inherit, spawn)
 import Options.Applicative.Builder (forwardOptions, header, info, metavar, progDesc, strArgument)
 import Options.Applicative.Extra (execParser, helper)
 import Options.Applicative.Internal.Utils ((<**>))
@@ -39,5 +35,7 @@ main = do
     <> progDesc "Push a branch to git with a different name."
     <> forwardOptions
   )
-  execSync ("git push origin HEAD:refs/heads/" <> dest <> joinWith " " (α forwards)) defaultExecSyncOptions
-  >>= Buff.toString UTF8 >>= log
+  pure unit <*
+    spawn "git"
+      ([ "push", "origin", "HEAD:refs/heads/" <> dest ] <> α forwards)
+      (defaultSpawnOptions { stdio = inherit })
